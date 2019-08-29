@@ -38,7 +38,7 @@ sourceCompatibility = 1.8
 
 // 使用了Maven的中央仓库及Spring自己的仓库（也可以指定其他仓库）
 repositories {
-    mavenCentral()
+//    mavenCentral()
     maven { url "https://repo.spring.io/snapshot" }
     maven { url "https://repo.spring.io/milestone" }
     maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
@@ -58,6 +58,8 @@ dependencies {
     compile('com.alibaba:fastjson:1.2.38')
     // Quartz
     compile('org.springframework.boot:spring-boot-starter-quartz')
+    // 添加 Spring Boot Thymeleaf Starter 的依赖
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 
     // 该依赖用于测试阶段
     testCompile('org.springframework.boot:spring-boot-starter-test')

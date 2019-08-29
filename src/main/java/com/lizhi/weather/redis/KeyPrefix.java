@@ -12,7 +12,7 @@ public interface KeyPrefix {
 	 * 过期时间
 	 * @return
 	 */
-	int expireSeconds();
+	long expireSeconds();
 
 	/**
 	 * 获取前缀

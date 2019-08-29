@@ -37,7 +37,7 @@ public class WeatherDataSyncJob extends QuartzJobBean {
         for (City city : cityList) {
             String cityId = city.getCityId();
             log.info("Weather Data Sync Job, cityId:" + cityId);
-            weatherDataService.syncDateByCityId(cityId);
+            weatherDataService.syncWeatherDataByCityId(cityId);
         }
 
         log.info("Weather Data Sync Job. End！");

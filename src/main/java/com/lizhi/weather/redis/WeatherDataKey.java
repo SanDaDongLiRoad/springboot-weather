@@ -1,5 +1,7 @@
 package com.lizhi.weather.redis;
 
+import lombok.Getter;
+
 /**
  * 天气数据
  *
@@ -8,9 +10,9 @@ package com.lizhi.weather.redis;
  */
 public class WeatherDataKey extends BasePrefix{
 
-    public WeatherDataKey(int expireSeconds, String prefix) {
+    public WeatherDataKey(long expireSeconds, String prefix) {
         super(expireSeconds, prefix);
     }
 
-    public static WeatherDataKey weatherData = new WeatherDataKey(1800, "go");
+    public static WeatherDataKey weatherData = new WeatherDataKey(1800, "weatherData");
 }

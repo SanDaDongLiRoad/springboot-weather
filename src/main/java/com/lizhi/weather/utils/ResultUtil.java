@@ -17,7 +17,7 @@ public class ResultUtil {
      * @param <T>
      * @return
      */
-    public static <T> ResultVO success(T data){
+    public static <T> ResultVO<T> success(T data){
 
         ResultVO<T> result = new ResultVO<T>(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg(),data);
         return result;

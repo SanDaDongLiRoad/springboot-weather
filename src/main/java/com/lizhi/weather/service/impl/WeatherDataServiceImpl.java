@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 天气数据业务类
@@ -40,9 +41,9 @@ public class WeatherDataServiceImpl implements WeatherDataService {
         log.info("根据城市编码查询城市天气 cityId:{}",cityId);
 
         // 先查缓存，缓存有的取缓存中的数据
-        if (stringRedisTemplate.hasKey(WeatherDataKey.weatherData+cityId)) {
+        if (stringRedisTemplate.hasKey(WeatherDataKey.weatherData.getPrefix() + cityId)) {
             log.info("取缓存中的天气数据");
-            String weatherDataStr = stringRedisTemplate.opsForValue().get(WeatherDataKey.weatherData+cityId);
+            String weatherDataStr = stringRedisTemplate.opsForValue().get(WeatherDataKey.weatherData.getPrefix()+cityId);
             Weather weather = JSONObject.parseObject(weatherDataStr,Weather.class);
             log.info("根据城市编码查询城市天气 result:{}",weather);
             return weather;
@@ -55,7 +56,7 @@ public class WeatherDataServiceImpl implements WeatherDataService {
             String weatherDataStr = weatherSystemResponse.getBody();
             WeatherResponse weatherResponse = JSONObject.parseObject(weatherDataStr, WeatherResponse.class);
             if(Objects.equals(weatherResponse.getStatus(),1000)) {
-                stringRedisTemplate.opsForValue().set(WeatherDataKey.weatherData + cityId, JSONObject.toJSONString(weatherResponse.getData()));
+                stringRedisTemplate.opsForValue().set(WeatherDataKey.weatherData.getPrefix() + cityId, JSONObject.toJSONString(weatherResponse.getData()),WeatherDataKey.weatherData.expireSeconds(), TimeUnit.SECONDS);
             }
             log.info("天气数据结果 result:{}",weatherResponse.getDesc());
             return weatherResponse.getData();
@@ -68,9 +69,9 @@ public class WeatherDataServiceImpl implements WeatherDataService {
         log.info("根据城市名称查询城市天气 cityName:{}",cityName);
 
         // 先查缓存，缓存有的取缓存中的数据
-        if (stringRedisTemplate.hasKey(WeatherDataKey.weatherData+cityName)) {
+        if (stringRedisTemplate.hasKey(WeatherDataKey.weatherData.getPrefix() + cityName)) {
             log.info("取缓存中的天气数据");
-            String weatherDataStr = stringRedisTemplate.opsForValue().get(WeatherDataKey.weatherData+cityName);
+            String weatherDataStr = stringRedisTemplate.opsForValue().get(WeatherDataKey.weatherData.getPrefix()+cityName);
             Weather weather = JSONObject.parseObject(weatherDataStr,Weather.class);
             log.info("根据城市名称查询城市天气 result:{}",weather);
             return weather;
@@ -83,7 +84,7 @@ public class WeatherDataServiceImpl implements WeatherDataService {
             String weatherDataStr = weatherSystemResponse.getBody();
             WeatherResponse weatherResponse = JSONObject.parseObject(weatherDataStr, WeatherResponse.class);
             if(Objects.equals(weatherResponse.getStatus(),1000)) {
-                stringRedisTemplate.opsForValue().set(WeatherDataKey.weatherData + cityName, JSONObject.toJSONString(weatherResponse.getData()));
+                stringRedisTemplate.opsForValue().set(WeatherDataKey.weatherData.getPrefix() + cityName, JSONObject.toJSONString(weatherResponse.getData()),WeatherDataKey.weatherData.expireSeconds(), TimeUnit.SECONDS);
             }
             log.info("根据城市名称查询城市天气 result:{}",weatherResponse.getDesc());
             return weatherResponse.getData();
@@ -92,7 +93,7 @@ public class WeatherDataServiceImpl implements WeatherDataService {
     }
 
     @Override
-    public void syncDateByCityId(String cityId) {
+    public void syncWeatherDataByCityId(String cityId) {
         log.info("开始同步天气数据 cityId:{}",cityId);
 
         //调用天气系统获取天气数据
@@ -102,7 +103,7 @@ public class WeatherDataServiceImpl implements WeatherDataService {
             String weatherDataStr = weatherSystemResponse.getBody();
             WeatherResponse weatherResponse = JSONObject.parseObject(weatherDataStr, WeatherResponse.class);
             if(Objects.equals(weatherResponse.getStatus(),1000)) {
-                stringRedisTemplate.opsForValue().set(WeatherDataKey.weatherData + cityId, JSONObject.toJSONString(weatherResponse.getData()));
+                stringRedisTemplate.opsForValue().set(WeatherDataKey.weatherData.getPrefix() + cityId, JSONObject.toJSONString(weatherResponse.getData()),WeatherDataKey.weatherData.expireSeconds(), TimeUnit.SECONDS);
             }
             log.info("天气数据结果 result:{}",weatherResponse.getDesc());
         }

@@ -28,12 +28,12 @@ public class CityServiceImpl implements CityService {
     @Override
     public List<City> listCity() {
         // 读取XML文件
-        Resource resource = new ClassPathResource("city-list.xml");
-        StringBuffer areasJsonStr = new StringBuffer();
+        Resource resource = new ClassPathResource("data/city-list.xml");
+        StringBuffer areasXmlStr = new StringBuffer();
         try(BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream(), "utf-8"))){
             String line = "";
             while ((line = br.readLine()) !=null) {
-                areasJsonStr.append(line);
+                areasXmlStr.append(line);
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -41,7 +41,7 @@ public class CityServiceImpl implements CityService {
             e.printStackTrace();
         }
         // XML转为Java对象
-        Areas areas = XmlUtil.xmlStrToOject(Areas.class, areasJsonStr.toString());
+        Areas areas = XmlUtil.xmlStrToOject(Areas.class, areasXmlStr.toString());
         return areas.getCityList();
     }
 }

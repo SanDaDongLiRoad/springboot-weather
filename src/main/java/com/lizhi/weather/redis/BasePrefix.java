@@ -8,11 +8,11 @@ package com.lizhi.weather.redis;
  */
 public abstract class BasePrefix implements KeyPrefix{
 	
-	private int expireSeconds;
+	private long expireSeconds;
 	
 	private String prefix;
 
-	public BasePrefix(int expireSeconds, String prefix) {
+	public BasePrefix(long expireSeconds, String prefix) {
 		this.expireSeconds = expireSeconds;
 		this.prefix = prefix;
 	}
@@ -24,7 +24,7 @@ public abstract class BasePrefix implements KeyPrefix{
 
 	
 	@Override
-	public int expireSeconds() {//默认0代表永不过期
+	public long expireSeconds() {//默认0代表永不过期
 		return expireSeconds;
 	}
 
